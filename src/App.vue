@@ -7,6 +7,7 @@
       :uploadImage="uploadImage"
       :imageData="imageData"
       :images="images"
+      
     >
     </create-product> 
   </div>
@@ -26,7 +27,8 @@ export default {
   data: function() {
     return {
       imageData: "", // lưu trữ hình ảnh dưới dạng base64,
-      images: []
+      images: [],
+      
     }
   },
   methods: {
