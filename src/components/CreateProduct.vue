@@ -410,9 +410,24 @@
     width: 100%;
     border: none;
     border-bottom: 1px solid #e6e7f0;
+    font-size: 14px;
+    opacity: 0.5;
+    padding-top: 5px;
+  }
+  .cl-inp-op-value:focus {
+    outline: none;
+    border-bottom: 1px solid #7009ff;
   }
   .cl-inp-r {
     padding: 0px 50px;
     width: 100%;
+  }
+  .cl-inp-op-name {
+    border: none;
+    border-bottom: 1px solid #e6e7f0;
+  }
+  .cl-inp-op-name:focus {
+    outline: none;
+    border-bottom: 1px solid #7009ff;
   }
 </style>
