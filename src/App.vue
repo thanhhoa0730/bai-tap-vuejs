@@ -7,7 +7,7 @@
       :uploadImage="uploadImage"
       :imageData="imageData"
       :images="images"
-      
+      :question="question"
     >
     </create-product> 
   </div>
@@ -28,7 +28,7 @@ export default {
     return {
       imageData: "", // lưu trữ hình ảnh dưới dạng base64,
       images: [],
-      
+      question: []
     }
   },
   methods: {
@@ -44,7 +44,22 @@ export default {
         reader.readAsDataURL(input.files[0]);      
       }
     }
-    
+  },
+  mounted () {
+    // this.$axios
+    // .get('https://opentdb.com/api.php?amount=10&category=27&type=multiplev')
+    // .then(response => (this.question = response.data.results))
+    // console.log(this.$axios)
+    fetch('https://opentdb.com/api.php?amount=1', {
+      method:'get'
+    })
+    //lấy data
+    .then((response)=>{
+      return response.json()
+    })
+    .then((jsondt)=> {
+      this.question = jsondt.results
+    })
   }
 }
 </script>

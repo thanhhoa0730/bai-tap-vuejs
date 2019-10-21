@@ -20,7 +20,7 @@
           <div class="cl-card-left shadow">
             <div class="cl-input">
               <p class="cl-p-title">Product Name</p>
-              <input class="cl-input-product-name" placeholder="product name"></input>
+              <input class="cl-input-product-name" placeholder="product name">
             </div>
             <div class="cl-summernote">
               <div id="summernote">Hello Summernote</div>
@@ -31,15 +31,15 @@
           <div class="cl-card-right shadow">
             <div class="cl-input-r">
               <p class="cl-p-title-r">Product Type</p>
-              <input class="cl-input-r" placeholder="Product Type"></input>
+              <input class="cl-input-r" placeholder="Product Type">
             </div>
             <div class="cl-input-r cl-input-r-vendor">
               <p class="cl-p-title-r">Vendor</p>
-              <input class="cl-input-r" placeholder="Vendor"></input>
+              <input class="cl-input-r" placeholder="Vendor">
             </div>
             <div class="cl-input-r cl-input-r-tags">
               <p class="cl-p-title-r">Tags</p>
-              <input class="cl-input-r" placeholder="Tags"></input>
+              <input class="cl-input-r" placeholder="Tags">
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
               <div cl="cl-up-gr-r">
                 <label class="cl-lb-btn btn" for="up_image">
                   <span class="cl-icon-svg"></span><span class="cl-submit">Upload image</span>
-                  <input hidden="hidden" name="file" type="file" id="up_image" @change="uploadImage"></input>
+                  <input hidden="hidden" name="file" type="file" id="up_image" @change="uploadImage">
                 </label>
               </div>
             </div>
@@ -63,7 +63,7 @@
                 <label class="cl-img-click" for="up_image">
                   <div class="cl-img-hover">
                     <span class="cl-bg-img-files"></span>
-                    <input hidden="hidden" name="file" type="file" id="up_image" @change="uploadImage"></input>
+                    <input hidden="hidden" name="file" type="file" id="up_image" @change="uploadImage">
                   </div>
                 </label>
               </div>
@@ -88,9 +88,14 @@
             <h6 class="d-flex font-weight-bold">Product Variants</h6>
             <div class="row">
               <div class="col-lg-4">
-                <div class="cl-list-input"  v-for="(valueInput, index) in valueInputs" :key="index">
+                <!-- v-for="(valueInput, index) in valueInputs" :key="index" -->
+                <div class="cl-list-input">
                   <div class="cl-inp-l">
-                    <input class="cl-inp-op-name" type="text" v-model="valueInput[index]">
+                    <input class="cl-inp-op-name" type="text"
+                    v-for="(valueVariants,i) in valueVariant" :key="i"
+                    v-model="valueVariant[i]"
+                    v-on:keyup.enter="addItem"
+                    >
                   </div>
                 </div>
                 <div class="cl-inpu-f-add">
@@ -100,9 +105,13 @@
                 </div>
               </div>
               <div class="col-lg-8">
-                <div class="cl-list-input"  v-for="(valueInput, index) in valueInputs" :key="index">
+                <!-- v-for="(valueInput, index) in valueInputs" :key="index"   v-model="valueInput[index]"-->
+                <div class="cl-list-input">
                   <div class="cl-inp-r">
-                    <input class="cl-inp-op-value" type="text" placeholder="Add option..." v-model="valueInput[index]">
+                    <input class="cl-inp-op-value" type="text" placeholder="Add option..." 
+                    v-for="(valueVariants,i) in valueVariant" :key="i"
+                    v-model="valueVariant[i]"
+                    v-on:keyup.enter="addItem">
                   </div>
                 </div>
                 <div class="cl-inpu-f-add-value">
@@ -121,25 +130,26 @@
             </div>
             <div class="cl-table">
               <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Warehouse</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Sku</th>
-                    <th scope="col">Inventory</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
+                  <div class="test_item">
+                    <tr class="cl-tr-title">
+                      <th scope="col">#</th>
+                      <th scope="col" v-show="activeVariant">Variant</th>
+                      <th scope="col">Warehouse</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Sku</th>
+                      <th scope="col">Inventory</th>
+                    </tr>
+                  </div>
+                  <div class="test d-flex" v-for="(arrayAdds, i) in arrayAdd" :key="i">
                     <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border">
-                      <span>Mark</span></td>
-                    <td class="cl-td-border"><span>Mark</span></td>
-                    <td class="cl-td-border"><span>Mark</span></td>
-                    <td class="cl-td-border"><span>Mark</span></td>
-                  </tr>                 
-                </tbody>
+                    <td >{{arrayAdds}}</td><br/>
+                    <tr v-for="(item, index) in question" :key="index">        
+                    <td class="cl-td-border">{{item.category}}</td>
+                    <td class="cl-td-border">{{item.type}}</td>
+                    <td class="cl-td-border">{{item.difficulty}}</td>
+                    <td class="cl-td-border">{{item.correct_answer}}</td>
+                  </tr>  
+                  </div>             
               </table>
             </div>
           </div>
@@ -155,13 +165,13 @@
       uploadImage: Function,
       imageData: String,
       images: Array,
-      
+      question: Array
     },
     data: function() {
       return {
-        valueInputs: [],
-        // optionName: " ",
-        // optionValue: " "
+        arrayAdd:[],
+        valueVariant: [],
+        activeVariant: false    
       }
     },
     computed: {
@@ -169,11 +179,17 @@
     },
     methods: {
       clickAdd() {
-        this.valueInputs.push(this.valueInputs.length+1)
-
+        this.valueVariant.push(this.valueVariant.length);
+      },
+      addItem() {
+        this.arrayAdd.unshift(this.valueVariant);
+        this.activeVariant = true;
+      },
+      textInput() {
+        var str = this.valueVariant;
+        
       }
-    }
-    
+    }    
   }
   $(document).ready(function(){
     $('.cl-img-click').click(function(){
@@ -185,6 +201,10 @@
   });
 </script>
 <style scoped>
+  .cl-tr-title {
+    display: inline-table;
+    width: 100%;
+  }
   .cl-icon-arrow-l {
     background-image: url("../assets/chevron-left-solid.svg");
     background-repeat: no-repeat;
@@ -404,8 +424,10 @@
     border: none;
     border-bottom: 1px solid #e6e7f0;
     font-size: 14px;
-    opacity: 0.5;
     padding-top: 5px;
+  }
+  .cl-inp-op-value::placeholder {
+    opacity: 0.5
   }
   .cl-inp-op-value:focus {
     outline: none;
