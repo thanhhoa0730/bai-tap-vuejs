@@ -86,27 +86,29 @@
         <div class="col-lg-8">
           <div class="cl-col-form-add shadow">
             <h6 class="d-flex font-weight-bold">Product Variants</h6>
-            <div class="cl-gr-input-form d-flex">
-              <div class="cl-inpu-f-add">
-                <p class="cl-p-title-f-add font-weight-bold">Option name</p>
-                <!-- <input class="cl-input-product-name-f-add" placeholder="Warehouse"></input> -->
-                <p class="cl-title-Warehouse">Warehouse</p>
-              </div>
-              <div class="cl-inpu-f-add-value">
-                <p class="cl-p-title-f-add font-weight-bold">Option value</p>
-                <input class="cl-input-product-name-f-add" placeholder="Option value">
-              </div>
-            </div>
-            <div id="test">
-              <div class="cl-list-input"  v-for="(valueInput, index) in valueInputs" :key="index">
-                <div class="cl-inp-l">
-                  <input class="cl-inp-op-name" type="text" v-model="valueInput[index]">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="cl-list-input"  v-for="(valueInput, index) in valueInputs" :key="index">
+                  <div class="cl-inp-l">
+                    <input class="cl-inp-op-name" type="text" v-model="valueInput[index]">
+                  </div>
                 </div>
-                <div class="cl-inp-r">
-                  <input class="cl-inp-op-value" type="text" placeholder="Add option..." v-model="valueInput[index]">
+                <div class="cl-inpu-f-add">
+                  <p class="cl-p-title-f-add font-weight-bold">Option name</p>
+                  <!-- <input class="cl-input-product-name-f-add" placeholder="Warehouse"></input> -->
+                  <p class="cl-title-Warehouse">Warehouse</p>
                 </div>
-                
-                <!-- <input class="i1" type="text" v-model="valueInput[index]"> -->
+              </div>
+              <div class="col-lg-8">
+                <div class="cl-list-input"  v-for="(valueInput, index) in valueInputs" :key="index">
+                  <div class="cl-inp-r">
+                    <input class="cl-inp-op-value" type="text" placeholder="Add option..." v-model="valueInput[index]">
+                  </div>
+                </div>
+                <div class="cl-inpu-f-add-value">
+                  <p class="cl-p-title-f-add font-weight-bold">Option value</p>
+                  <input class="cl-input-product-name-f-add" placeholder="Option value">
+                </div>
               </div>
             </div>
             <button class="cl-add-item-f d-flex" @click="clickAdd()">+ Add variant option</button>
@@ -168,6 +170,7 @@
     methods: {
       clickAdd() {
         this.valueInputs.push(this.valueInputs.length+1)
+
       }
     }
     
@@ -182,9 +185,6 @@
   });
 </script>
 <style scoped>
-/* .test-list {
-  display: none;
-} */
   .cl-icon-arrow-l {
     background-image: url("../assets/chevron-left-solid.svg");
     background-repeat: no-repeat;
@@ -353,12 +353,8 @@
     padding: 30px 30px;
     border-radius: 6px;
   }
-  .cl-gr-input-form {
-    padding-top: 30px;
-  }
   .cl-inpu-f-add-value {
     padding: 0px 50px;
-    width: 100%;
   }
   .cl-add-item-f {
     color: #7009ff;
@@ -400,9 +396,6 @@
     margin-bottom: 0;
     padding: 2px 0px
   }
-  .cl-inpu-f-add {
-    width: 25%;
-  }
   .cl-list-input {
     display: flex;
   }
@@ -425,9 +418,13 @@
   .cl-inp-op-name {
     border: none;
     border-bottom: 1px solid #e6e7f0;
+    width: 100%;
   }
   .cl-inp-op-name:focus {
     outline: none;
     border-bottom: 1px solid #7009ff;
+  }
+  .cl-inp-l {
+    width: 100%;
   }
 </style>
