@@ -88,39 +88,40 @@
             <h6 class="d-flex font-weight-bold">Product Variants</h6>
             <div class="row">
               <div class="col-lg-4">
-                <!-- v-for="(valueInput, index) in valueInputs" :key="index" -->
                 <div class="cl-list-input">
                   <div class="cl-inp-l">
-                    <input class="cl-inp-op-name" type="text"
-                    v-for="(valueVariants,i) in valueVariant" :key="i"
-                    v-model="valueVariant[i]"
-                    v-on:keyup.enter="addItem"
-                    >
+                    <input class="cl-inp-op-name" type="text" v-for="(n, index) in counter" :key="index" v-if="index <= 2">
                   </div>
                 </div>
                 <div class="cl-inpu-f-add">
                   <p class="cl-p-title-f-add font-weight-bold">Option name</p>
-                  <!-- <input class="cl-input-product-name-f-add" placeholder="Warehouse"></input> -->
                   <p class="cl-title-Warehouse">Warehouse</p>
                 </div>
               </div>
               <div class="col-lg-8">
-                <!-- v-for="(valueInput, index) in valueInputs" :key="index"   v-model="valueInput[index]"-->
                 <div class="cl-list-input">
                   <div class="cl-inp-r">
-                    <input class="cl-inp-op-value" type="text" placeholder="Add option..." 
-                    v-for="(valueVariants,i) in valueVariant" :key="i"
-                    v-model="valueVariant[i]"
-                    v-on:keyup.enter="addItem">
+                    <input-tag class="cl-inp-op-value" 
+                    type="text" placeholder="Add option..."
+                    v-for="(n, index) in counter" :key="index" v-if="index <= 2" ></input-tag>
                   </div>
                 </div>
                 <div class="cl-inpu-f-add-value">
                   <p class="cl-p-title-f-add font-weight-bold">Option value</p>
-                  <input class="cl-input-product-name-f-add" placeholder="Option value">
+                  <!-- <input class="cl-input-product-name-f-add" 
+                  placeholder="Option value" 
+                  value="viet nam store 1" 
+                  data-role="tagsinput"
+                  v-model="tags"> -->
+                  <div class="cl-border-bottom">
+                    <input-tag class="cl-input-product-name-f-add" 
+                   
+                    ></input-tag>
+                  </div>
                 </div>
               </div>
             </div>
-            <button class="cl-add-item-f d-flex" @click="clickAdd()">+ Add variant option</button>
+            <button id="addInput" class="cl-add-item-f d-flex" @click="counter++">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
             <div class="cl-checkbox-f-add d-flex">
               <input class="text" id="check_box" type="checkbox">
@@ -140,14 +141,14 @@
                       <th scope="col">Inventory</th>
                     </tr>
                   </div>
-                  <div class="test d-flex" v-for="(arrayAdds, i) in arrayAdd" :key="i">
+                  <div class="test d-flex">
                     <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td >{{arrayAdds}}</td><br/>
-                    <tr v-for="(item, index) in question" :key="index">        
-                    <td class="cl-td-border">{{item.category}}</td>
-                    <td class="cl-td-border">{{item.type}}</td>
-                    <td class="cl-td-border">{{item.difficulty}}</td>
-                    <td class="cl-td-border">{{item.correct_answer}}</td>
+                    <td ></td><br/>
+                    <tr>        
+                    <td class="cl-td-border" v-for="(optionValues,i) in optionValue" :key="i">{{optionValues.optionTitle}}</td>
+                    <td class="cl-td-border">abc</td>
+                    <td class="cl-td-border">abc</td>
+                    <td class="cl-td-border">abc</td>
                   </tr>  
                   </div>             
               </table>
@@ -169,9 +170,13 @@
     },
     data: function() {
       return {
-        arrayAdd:[],
+        activeVariant: false,
+        optionValue: [
+          {optionTitle: 'viet nam store 1'},
+          {optionTitle2: 'viet nam store 2'}
+        ],
         valueVariant: [],
-        activeVariant: false    
+        counter: 0
       }
     },
     computed: {
@@ -179,25 +184,35 @@
     },
     methods: {
       clickAdd() {
-        this.valueVariant.push(this.valueVariant.length);
+        
       },
       addItem() {
-        this.arrayAdd.unshift(this.valueVariant);
-        this.activeVariant = true;
-      },
-      textInput() {
-        var str = this.valueVariant;
-        
+        // this.arrayAdd.unshift(this.valueVariant);
+        // this.activeVariant = true;
       }
     }    
   }
   $(document).ready(function(){
     $('.cl-img-click').click(function(){
       $('.cl-img-hover').css('display','none')
-    })
-  });
-  $(document).ready(function() {
+    });
+    //summernot
     $('#summernote').summernote();
+    //add input
+    //khai báo số khung giới hạn input
+    // var max_input = 3;
+    // var class_input_l = $('.cl-add-int-l');// lớp bao ngoài
+    // var class_input_r = $('.cl-add-int-r')
+    // var button_add = $('#addInput');// nút +add
+    // var x=1;
+    // $(button_add).click(function(e){
+    //   e.preventDefault();
+    //   if(x <= max_input) {
+    //     x++;
+    //     $(class_input_l).append('<div class="cl-inp-l"><input class="cl-inp-op-name" type="text"></div>')
+    //     $(class_input_r).append('<div class="cl-inp-r"><input-tag class="cl-inp-op-value" type="text" placeholder="Add option..."></input-tag></div>')
+    //   }
+    // })
   });
 </script>
 <style scoped>
@@ -235,17 +250,12 @@
   .cl-p-title, .cl-input-product-name, .cl-p-title-r,.cl-p-title-f-add {
     display: flex;
   }
-  .cl-input-product-name, .cl-input-r, .cl-input-product-name-f-add {
+  .cl-input-product-name, .cl-input-r {
     border: none;
     border-bottom: 1px solid #e6e7f0;
     width: 100%;
   }
   .cl-input-product-name::placeholder {
-    opacity: 0.5;
-    font-size: 14px;
-    text-transform: capitalize;
-  }
-  .cl-input-product-name-f-add::placeholder {
     opacity: 0.5;
     font-size: 14px;
     text-transform: capitalize;
@@ -271,13 +281,26 @@
     border-bottom: 1px solid #7009ff;
     transition: 0.3s;
   }
-  input.cl-input-product-name-f-add:focus {
-    outline: none;
+  .cl-input-product-name-f-add {
+    border: none;
+    padding: 0;
+  }
+  .cl-input-product-name-f-add:focus {
     border-bottom: 1px solid #7009ff;
     transition: 0.3s;
+    outline: none;
+  }
+  .vue-input-tag-wrapper .input-tag {
+    background-color: #e9e9eb;
+    border: 1px solid #dddddd;
+    color: #4d4f5c;
+  }
+  .cl-border-bottom {
+    border-bottom: 1px solid #e6e7f0;
   }
   .note-children-container {
     display: none!important;
+    border-bottom: 1px solid #7009ff;
   }
   .cl-up-image {
     display: flex;
@@ -373,9 +396,9 @@
     padding: 30px 30px;
     border-radius: 6px;
   }
-  .cl-inpu-f-add-value {
+  /* .cl-inpu-f-add-value {
     padding: 0px 50px;
-  }
+  } */
   .cl-add-item-f {
     color: #7009ff;
     /* //padding-top: 30px; */
@@ -412,19 +435,15 @@
     border-bottom: 1px solid #e6e7f0;
     width: 100%;
     font-size: 14px;
-    color: #e6e7f0;
+    color: #000000;
     margin-bottom: 0;
     padding: 2px 0px
-  }
-  .cl-list-input {
-    display: flex;
   }
   .cl-inp-op-value {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #e6e7f0;
+    /* border-bottom: 1px solid #e6e7f0; */
     font-size: 14px;
-    padding-top: 5px;
   }
   .cl-inp-op-value::placeholder {
     opacity: 0.5
@@ -434,8 +453,12 @@
     border-bottom: 1px solid #7009ff;
   }
   .cl-inp-r {
-    padding: 0px 50px;
+    /* padding: 0px 50px; */
     width: 100%;
+    border-bottom: 1px solid #e6e7f0;
+  }
+  .cl-inp-r:focus {
+    border-bottom: 1px solid #7009ff;
   }
   .cl-inp-op-name {
     border: none;
