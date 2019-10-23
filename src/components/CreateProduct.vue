@@ -89,8 +89,8 @@
             <div class="row">
               <div class="col-lg-4">
                 <div class="cl-list-input">
-                  <div class="cl-inp-l">
-                    <input class="cl-inp-op-name" type="text" v-for="(n, index) in counter" :key="index" v-if="index <= 2">
+                  <div class="cl-inp-l" v-for="(n, index) in counter" :key="index" v-if="index <= 2">
+                    <input class="cl-inp-op-name" type="text">
                   </div>
                 </div>
                 <div class="cl-inpu-f-add">
@@ -98,12 +98,20 @@
                   <p class="cl-title-Warehouse">Warehouse</p>
                 </div>
               </div>
-              <div class="col-lg-8">
+              <div class="col-lg-7">
                 <div class="cl-list-input">
-                  <div class="cl-inp-r">
+                  <div class="cl-inp-r" 
+                  v-for="(n, index) in counter" :key="index" 
+                  v-if="index <= 2"
+                  v-on:keyup.enter="showVariant()">
                     <input-tag class="cl-inp-op-value" 
                     type="text" placeholder="Add option..."
-                    v-for="(n, index) in counter" :key="index" v-if="index <= 2" ></input-tag>
+                    v-model="optionSelect"></input-tag>
+                    <div class="cl-style-delete">
+                      <div class="cl-border">
+                        <button class="cl-icon-delete"></button>
+                      </div>  
+                    </div>
                   </div>
                 </div>
                 <div class="cl-inpu-f-add-value">
@@ -114,12 +122,13 @@
                   data-role="tagsinput"
                   v-model="tags"> -->
                   <div class="cl-border-bottom">
-                    <input-tag class="cl-input-product-name-f-add" 
-                   
-                    ></input-tag>
+                    <input-tag class="cl-input-product-name-f-add"                     
+                    v-model="optionValue">
+                    </input-tag>
                   </div>
                 </div>
               </div>
+              
             </div>
             <button id="addInput" class="cl-add-item-f d-flex" @click="counter++">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
@@ -141,15 +150,16 @@
                       <th scope="col">Inventory</th>
                     </tr>
                   </div>
-                  <div class="test d-flex">
-                    <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td ></td><br/>
-                    <tr>        
-                    <td class="cl-td-border" v-for="(optionValues,i) in optionValue" :key="i">{{optionValues.optionTitle}}</td>
-                    <td class="cl-td-border">abc</td>
-                    <td class="cl-td-border">abc</td>
-                    <td class="cl-td-border">abc</td>
-                  </tr>  
+                  <div class="cl-item-row" v-for="questions in question" :key="questions.id">
+                    <!--//v-for="optionSelects in optionSelect" :key="optionSelects.id" -->
+                    <tr class="cl-item" v-for="optionSelects in optionSelect" :key="optionSelects.id">
+                      <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
+                      <td class="cl-td-border">{{optionSelects}}</td>        
+                      <td class="cl-td-border">{{questions.category}}</td>
+                      <td class="cl-td-border">{{questions.type}}</td>
+                      <td class="cl-td-border">{{questions.correct_answer}}</td>
+                      <td class="cl-td-border">{{questions.difficulty}}</td>
+                    </tr>  
                   </div>             
               </table>
             </div>
@@ -171,24 +181,25 @@
     data: function() {
       return {
         activeVariant: false,
-        optionValue: [
-          {optionTitle: 'viet nam store 1'},
-          {optionTitle2: 'viet nam store 2'}
-        ],
+        optionValue: [ "viet nam store 1" , "viet nam store 2"],
         valueVariant: [],
-        counter: 0
+        counter: 0,
+        optionSelect: "",
+        // activeBr: false;
+        // brItem: ""
       }
     },
     computed: {
-      
+
     },
     methods: {
       clickAdd() {
-        
+
       },
-      addItem() {
-        // this.arrayAdd.unshift(this.valueVariant);
-        // this.activeVariant = true;
+      showVariant() {
+        this.activeVariant = true;
+        console.log('this.activeVariant' + ' ' + this.activeVariant)
+        this.question.push(this.optionSelect)
       }
     }    
   }
@@ -198,27 +209,22 @@
     });
     //summernot
     $('#summernote').summernote();
-    //add input
-    //khai báo số khung giới hạn input
-    // var max_input = 3;
-    // var class_input_l = $('.cl-add-int-l');// lớp bao ngoài
-    // var class_input_r = $('.cl-add-int-r')
-    // var button_add = $('#addInput');// nút +add
-    // var x=1;
-    // $(button_add).click(function(e){
-    //   e.preventDefault();
-    //   if(x <= max_input) {
-    //     x++;
-    //     $(class_input_l).append('<div class="cl-inp-l"><input class="cl-inp-op-name" type="text"></div>')
-    //     $(class_input_r).append('<div class="cl-inp-r"><input-tag class="cl-inp-op-value" type="text" placeholder="Add option..."></input-tag></div>')
-    //   }
-    // })
+    //button delete
+    $('.cl-border').click(function(){
+      alert('hello')
+    })
   });
 </script>
-<style scoped>
-  .cl-tr-title {
-    display: inline-table;
-    width: 100%;
+<style>
+  .cl-item, .cl-tr-title {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cl-td-border {
+    border: 1px solid #e6e7f0 !important;
+    width: 25%;
+    border-radius: 6px;
+    margin: 0 15px;
   }
   .cl-icon-arrow-l {
     background-image: url("../assets/chevron-left-solid.svg");
@@ -282,15 +288,19 @@
     transition: 0.3s;
   }
   .cl-input-product-name-f-add {
-    border: none;
-    padding: 0;
+    border: none !important;
+    padding-left: 0 !important;
+    padding-top: 0 !important
+  }
+  .cl-input-product-name-f-add input {
+    background-color: #7009ff;
   }
   .cl-input-product-name-f-add:focus {
     border-bottom: 1px solid #7009ff;
     transition: 0.3s;
     outline: none;
   }
-  .vue-input-tag-wrapper .input-tag {
+  .vue-input-tag-wrapper.cl-input-product-name-f-add .input-tag {
     background-color: #e9e9eb;
     border: 1px solid #dddddd;
     color: #4d4f5c;
@@ -420,12 +430,7 @@
     width: 20px;
     height: 20px;
     background-color: #ffffff;
-    border: 2px solid #757575
-  }
-  .cl-td-border {
-    border: 1px solid #e6e7f0;
-    margin: 0px 15px;
-    border-radius: 15px;
+    border: 2px solid #757575;
   }
   .table {
     border-collapse: inherit;
@@ -437,13 +442,22 @@
     font-size: 14px;
     color: #000000;
     margin-bottom: 0;
-    padding: 2px 0px
+    padding: 7px 0px
   }
   .cl-inp-op-value {
     width: 100%;
-    border: none;
-    /* border-bottom: 1px solid #e6e7f0; */
+    border: none !important;
     font-size: 14px;
+    padding: 0px !important;
+  }
+  .cl-inp-op-value .new-tag {
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+  }
+  .cl-inp-op-value .input-tag {
+    background-color: #e9e9eb !important;
+    border: 1px solid #dddddd !important;
+    color: #4d4f5c !important;
   }
   .cl-inp-op-value::placeholder {
     opacity: 0.5
@@ -456,6 +470,12 @@
     /* padding: 0px 50px; */
     width: 100%;
     border-bottom: 1px solid #e6e7f0;
+  }
+  .cl-inp-r:nth-child(2) {
+    margin-top: 15px
+  }
+  .cl-inp-r:nth-child(3) {
+    margin-top: 15px
   }
   .cl-inp-r:focus {
     border-bottom: 1px solid #7009ff;
@@ -471,5 +491,41 @@
   }
   .cl-inp-l {
     width: 100%;
+  }
+  .cl-inp-l:nth-child(2) {
+    margin-top: 15px
+  }
+  .cl-inp-l:nth-child(3) {
+    margin-top: 15px
+  }
+  .vue-input-tag-wrapper .new-tag {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+  .cl-icon-delete {
+    background-image: url("../assets/trash-alt-solid.svg");
+    background-repeat: no-repeat;
+    width: 17px;
+    height: 20px;
+    border: none;
+    background-color: transparent  
+  }
+  .cl-style-delete {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+  }
+  .cl-border {
+    display: flex;
+    padding: 5px 10px;
+    border: 1px solid #e6e7f0;
+    border-radius: 6px;
+    position: absolute;
+    bottom: 0;
+  }
+  .cl-border:hover {
+    background-color: #e6e7f0;
+    cursor: pointer;
   }
 </style>
