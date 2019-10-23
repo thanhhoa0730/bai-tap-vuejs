@@ -1,5 +1,5 @@
 <template>
-  <div class="list-product">
+  <div class="list-product" v-show="isActive">
     <div class="cl-search">
       <input class="cl-input" placeholder="Search Product"></input>
     </div>
@@ -14,47 +14,48 @@
         </div>
         <div class="col-3">
           <div class="cl-button-add">
-            <button type="button" class="btn btn-primary">+ Add Product</button>
+            <button type="button" class="btn cl-btn-add" @click="activeAddProduct">+ Add Product</button>
           </div>
         </div>
       </div>
     </div>
     <div class="cl-list-product">
-      <table class="table shadow">
-        <thead>
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Category</th>
-            <th scope="col">Price</th>
-            <th scope="col">Inventory</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="cl-table-list shadow">
+        <table class="table cl-table-border">
+          <thead>
+            <tr class="cl-row-title-list">
+              <th scope="col">#</th>
+              <th scope="col">Product</th>
+              <th scope="col">Caterogy</th>
+              <th scope="col">Price</th>
+              <th scope="col">Inventory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cl-item-row-list" 
+            v-for="questions in question" :key="questions.id">
+              <th scope="row">
+                <input class="text cl-input-list" id="check_box" type="checkbox">
+              </th>
+              <td>{{questions.category}}</td>
+              <td>{{questions.type}}</td>
+              <td>{{questions.difficulty}}</td>
+              <td>{{questions.question}}</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 <script>
   export default {
+    props: {
+      question: Array,
+      activeAddProduct: Function,
+      isActive: Boolean
+    },
     data: function() {
       return {
         itemNav: {
@@ -65,13 +66,18 @@
           obj4: 'Draft(1)', 
         }
       }
+    },
+    methods: {
     }
   }
 </script>
-<style scoped>
+<style>
+  .cl-button-add {
+    display: flex;
+    justify-content: flex-end;
+  }
   .cl-search {
   width: 100%;
-  /* display: flex; */
   }
   .cl-search::after {
     content: ".";
@@ -81,33 +87,59 @@
   }
   .cl-input {
     border: none;
-    border-bottom: 1px solid #7009ff;
+    border-bottom: 1px solid #e6e7f0;
     float: left;
     width: 100%;
+    background-color: transparent;
+    
+  }
+  .cl-input:focus {
+    outline: none;
+    border-bottom: 1px solid #7009ff;
+    transition: 1s;
   }
   .cl-ul-nav-filter{
     list-style: none;
     padding-inline-start: 0;
     background-color: #ffffff;
     display:flex;
-    justify-content: center;
-  }
-  .cl-ul-nav-filter::after {
-    content: ".";
-    visibility: hidden;
-    display: block;
-    clear: both;
+    justify-content: space-around;
+    border-radius: 6px;
   }
   .cl-li-item-nav {
-    float: left;
     padding: 10px 10px;
   }
-  .cl-nav-filter {
-    
-  }
-  .cl-row-nav-button {
-      }
   .clear {
     clear: both;
+  }
+  .cl-btn-add {
+    border: 1px solid #7009ff !important;
+  }
+  .cl-btn-add:hover {
+    background-color: #7009ff;
+    color: #ffffff !important;
+  }
+  .cl-btn-add:focus {
+    box-shadow: 0 0 0 0.2rem #7009ff !important;
+  }
+  .cl-table-list {
+    background-color: #ffffff;
+    border-radius: 6px;
+  }
+  .cl-row-title-list th {
+    border-bottom: 0 !important;
+    border-top: 0 !important; 
+  }
+  .cl-row-title-list, .cl-item-row-list {
+    border-bottom: 1px solid #e6e7f0;
+  }
+  .cl-item-row-list td, th {
+    border-top: none !important;
+  }
+  .cl-table-border {
+    border-collapse: collapse !important;
+  }
+  .cl-input-list {
+    background-color: #7009ff !important;
   }
 </style>

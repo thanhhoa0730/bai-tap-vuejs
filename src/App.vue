@@ -2,14 +2,21 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <!-- <list-product></list-product> đóng tạm-->
+    <list-product
+    :question="question"
+    :activeAddProduct="activeAddProduct"
+    :isActive="isActive"
+    >
+    </list-product> 
     <create-product
       :uploadImage="uploadImage"
       :imageData="imageData"
       :images="images"
       :question="question"
-    >
-    </create-product> 
+      :isActivePagination="isActivePagination"
+      :backAllProduct="backAllProduct"
+    > 
+    </create-product>
   </div>
 </template>
 
@@ -22,13 +29,16 @@ export default {
   components: {
     //HelloWorld
     ListProduct,
-    CreateProduct
+    CreateProduct,
+
   },
   data: function() {
     return {
       imageData: "", // lưu trữ hình ảnh dưới dạng base64,
       images: [],
-      question: []
+      question: [],
+      isActivePagination: false,
+      isActive: true
     }
   },
   methods: {
@@ -43,6 +53,16 @@ export default {
         } 
         reader.readAsDataURL(input.files[0]);      
       }
+    },
+    //pagination
+    activeAddProduct () {
+      this.isActivePagination = true;
+      this.isActive = false;
+    },
+    //back
+    backAllProduct () {
+      this.isActivePagination = false;
+      this.isActive = true;
     }
   },
   mounted () {
@@ -50,7 +70,7 @@ export default {
     // .get('https://opentdb.com/api.php?amount=10&category=27&type=multiplev')
     // .then(response => (this.question = response.data.results))
     // console.log(this.$axios)
-    fetch('https://opentdb.com/api.php?amount=1', {
+    fetch('https://opentdb.com/api.php?amount=10&category=27&type=multiple', {
       method:'get'
     })
     //lấy data

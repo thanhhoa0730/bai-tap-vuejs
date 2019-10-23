@@ -1,9 +1,9 @@
 <template>
-  <div class="create-product">
+  <div id="createProduct" class="create-product" v-show="isActivePagination">
     <div class="row cl-row-button">
       <div class="col-lg-4">
         <div class="cl-button-back">
-          <span class="cl-icon-arrow-l"></span><span>All product</span>
+          <span class="cl-icon-arrow-l"></span><span @click="backAllProduct">All product</span>
         </div>
       </div>
       <div class="col-lg-8">
@@ -139,7 +139,7 @@
               </label>
             </div>
             <div class="cl-table">
-              <table class="table table-borderless">
+              <!-- <table class="table table-borderless">
                   <div class="test_item">
                     <tr class="cl-tr-title">
                       <th scope="col">#</th>
@@ -151,7 +151,6 @@
                     </tr>
                   </div>
                   <div class="cl-item-row" v-for="questions in question" :key="questions.id">
-                    <!--//v-for="optionSelects in optionSelect" :key="optionSelects.id" -->
                     <tr class="cl-item" v-for="optionSelects in optionSelect" :key="optionSelects.id">
                       <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
                       <td class="cl-td-border">{{optionSelects}}</td>        
@@ -161,6 +160,27 @@
                       <td class="cl-td-border">{{questions.difficulty}}</td>
                     </tr>  
                   </div>             
+              </table> -->
+              <table class="table table-borderless">
+                <thead>
+                  <tr class="cl-tr-title">
+                    <th scope="col">#</th>
+                    <th scope="col" v-show="activeVariant">Variant</th>
+                    <th scope="col">Warehouse</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Sku</th>
+                    <th scope="col">Inventory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="cl-item" >
+                    <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
+                    <td class="cl-td-border">abc</td>        
+                    <td class="cl-td-border">abc</td>
+                    <td class="cl-td-border">abc</td>
+                    <td class="cl-td-border">abc</td>
+                  </tr>  
+                </tbody>
               </table>
             </div>
           </div>
@@ -176,7 +196,9 @@
       uploadImage: Function,
       imageData: String,
       images: Array,
-      question: Array
+      question: Array,
+      isActivePagination: Boolean,
+      backAllProduct: Function
     },
     data: function() {
       return {
@@ -187,6 +209,7 @@
         optionSelect: "",
         // activeBr: false;
         // brItem: ""
+        showCreate: false
       }
     },
     computed: {
@@ -216,10 +239,10 @@
   });
 </script>
 <style>
-  .cl-item, .cl-tr-title {
+  /* .cl-item, .cl-tr-title {
     display: flex;
     justify-content: space-between;
-  }
+  } */
   .cl-td-border {
     border: 1px solid #e6e7f0 !important;
     width: 25%;

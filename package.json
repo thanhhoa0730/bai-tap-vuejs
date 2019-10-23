@@ -23,7 +23,8 @@
     "tagit": "^1.1.2",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
-    "vue-input-tag": "^2.0.6"
+    "vue-input-tag": "^2.0.6",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.0",
