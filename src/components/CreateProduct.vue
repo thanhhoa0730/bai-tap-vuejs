@@ -1,5 +1,6 @@
 <template>
-  <div id="createProduct" class="create-product" v-show="isActivePagination">
+  <!-- v-show="isActivePagination" đóng tạm-->
+  <div id="createProduct" class="create-product" >
     <div class="row cl-row-button">
       <div class="col-lg-4">
         <div class="cl-button-back">
@@ -18,7 +19,7 @@
       <div class="row cl-row-card">
         <div class="col-lg-8">
           <div class="cl-card-left shadow">
-            <div class="cl-input">
+            <div class="cl-input-pr">
               <p class="cl-p-title">Product Name</p>
               <input class="cl-input-product-name" placeholder="product name">
             </div>
@@ -103,10 +104,12 @@
                   <div class="cl-inp-r" 
                   v-for="(n, index) in counter" :key="index" 
                   v-if="index <= 2"
-                  v-on:keyup.enter="showVariant()">
+                  @keyup.enter="keyUpInput()">
+                  <!-- v-on:keyup.enter="keyUpInput()" -->
                     <input-tag class="cl-inp-op-value" 
                     type="text" placeholder="Add option..."
-                    v-model="optionSelect"></input-tag>
+                    v-model="valueVariant"
+                    ></input-tag>
                     <div class="cl-style-delete">
                       <div class="cl-border">
                         <button class="cl-icon-delete"></button>
@@ -116,11 +119,6 @@
                 </div>
                 <div class="cl-inpu-f-add-value">
                   <p class="cl-p-title-f-add font-weight-bold">Option value</p>
-                  <!-- <input class="cl-input-product-name-f-add" 
-                  placeholder="Option value" 
-                  value="viet nam store 1" 
-                  data-role="tagsinput"
-                  v-model="tags"> -->
                   <div class="cl-border-bottom">
                     <input-tag class="cl-input-product-name-f-add"                     
                     v-model="optionValue">
@@ -128,7 +126,6 @@
                   </div>
                 </div>
               </div>
-              
             </div>
             <button id="addInput" class="cl-add-item-f d-flex" @click="counter++">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
@@ -139,32 +136,10 @@
               </label>
             </div>
             <div class="cl-table">
-              <!-- <table class="table table-borderless">
-                  <div class="test_item">
-                    <tr class="cl-tr-title">
-                      <th scope="col">#</th>
-                      <th scope="col" v-show="activeVariant">Variant</th>
-                      <th scope="col">Warehouse</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Sku</th>
-                      <th scope="col">Inventory</th>
-                    </tr>
-                  </div>
-                  <div class="cl-item-row" v-for="questions in question" :key="questions.id">
-                    <tr class="cl-item" v-for="optionSelects in optionSelect" :key="optionSelects.id">
-                      <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                      <td class="cl-td-border">{{optionSelects}}</td>        
-                      <td class="cl-td-border">{{questions.category}}</td>
-                      <td class="cl-td-border">{{questions.type}}</td>
-                      <td class="cl-td-border">{{questions.correct_answer}}</td>
-                      <td class="cl-td-border">{{questions.difficulty}}</td>
-                    </tr>  
-                  </div>             
-              </table> -->
               <table class="table table-borderless">
                 <thead>
                   <tr class="cl-tr-title">
-                    <th scope="col">#</th>
+                      <th scope="col">#</th>
                     <th scope="col" v-show="activeVariant">Variant</th>
                     <th scope="col">Warehouse</th>
                     <th scope="col">Price</th>
@@ -172,14 +147,18 @@
                     <th scope="col">Inventory</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr class="cl-item" >
-                    <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border">abc</td>        
-                    <td class="cl-td-border">abc</td>
-                    <td class="cl-td-border">abc</td>
-                    <td class="cl-td-border">abc</td>
-                  </tr>  
+                <tbody>                 
+                  <tr>
+                    <!-- <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
+                    <td class="cl-td-border" ><span></span></td> -->
+                    <!-- <td class="cl-td-border">{{questions.category}}</td>        
+                    <td class="cl-td-border">{{questions.type}}</td>
+                    <td class="cl-td-border">{{questions.difficulty}}</td>
+                    <td class="cl-td-border">{{questions.correct_answer}}</td> -->
+                    <!-- <ul>
+                      <li><td class="cl-td-border"></td></li>
+                    </ul> -->
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -197,7 +176,7 @@
       imageData: String,
       images: Array,
       question: Array,
-      isActivePagination: Boolean,
+      //isActivePagination: Boolean, đóng tạm
       backAllProduct: Function
     },
     data: function() {
@@ -206,7 +185,6 @@
         optionValue: [ "viet nam store 1" , "viet nam store 2"],
         valueVariant: [],
         counter: 0,
-        optionSelect: "",
         // activeBr: false;
         // brItem: ""
         showCreate: false
@@ -216,15 +194,16 @@
 
     },
     methods: {
-      clickAdd() {
-
-      },
-      showVariant() {
+      keyUpInput() {
         this.activeVariant = true;
-        console.log('this.activeVariant' + ' ' + this.activeVariant)
-        this.question.push(this.optionSelect)
+        const arrparent = this.question;
+        const mangmoi = this.valueVariant;
+        const arrnew = this.question.map(function(e){
+          return e.push(this.valueVariant)
+        })
+        console.log(arrnew)
       }
-    }    
+    }  
   }
   $(document).ready(function(){
     $('.cl-img-click').click(function(){
@@ -239,10 +218,6 @@
   });
 </script>
 <style>
-  /* .cl-item, .cl-tr-title {
-    display: flex;
-    justify-content: space-between;
-  } */
   .cl-td-border {
     border: 1px solid #e6e7f0 !important;
     width: 25%;
@@ -272,6 +247,7 @@
     background-color: #ffffff;
     padding: 30px 30px;
     border-radius: 6px;
+    margin-bottom: 50px;
   }
   .cl-gr-card {
     margin-top: 50px;

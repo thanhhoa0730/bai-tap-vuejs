@@ -2,12 +2,12 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <list-product
+    <!-- <list-product
     :question="question"
     :activeAddProduct="activeAddProduct"
     :isActive="isActive"
     >
-    </list-product> 
+    </list-product>  đóng t-->
     <create-product
       :uploadImage="uploadImage"
       :imageData="imageData"
