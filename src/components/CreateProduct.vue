@@ -102,13 +102,13 @@
               <div class="col-lg-7">
                 <div class="cl-list-input">
                   <div class="cl-inp-r" 
-                  v-for="(n, index) in counter" :key="index" 
-                  v-if="index <= 2"
-                  @keyup.enter="keyUpInput()">
-                  <!-- v-on:keyup.enter="keyUpInput()" -->
+                    v-for="(n, index) in counter" :key="index" 
+                    v-if="index <= 2"
+                    @keyup.enter="onOptionEnter"
+                    :name="`variant-${index}`">
                     <input-tag class="cl-inp-op-value" 
                     type="text" placeholder="Add option..."
-                    v-model="valueVariant"
+                    v-model="options[index]"
                     ></input-tag>
                     <div class="cl-style-delete">
                       <div class="cl-border">
@@ -127,7 +127,7 @@
                 </div>
               </div>
             </div>
-            <button id="addInput" class="cl-add-item-f d-flex" @click="counter++">+ Add variant option</button>
+            <button id="addInput" class="cl-add-item-f d-flex" @click="addVariant">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
             <div class="cl-checkbox-f-add d-flex">
               <input class="text" id="check_box" type="checkbox">
@@ -148,7 +148,7 @@
                   </tr>
                 </thead>
                 <tbody>                 
-                  <tr>
+                
                     <!-- <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
                     <td class="cl-td-border" ><span></span></td> -->
                     <!-- <td class="cl-td-border">{{questions.category}}</td>        
@@ -158,7 +158,15 @@
                     <!-- <ul>
                       <li><td class="cl-td-border"></td></li>
                     </ul> -->
+                    <tr v-for="(item, index) in listMixVariant" :key="index">
+                    <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
+                    <td class="cl-td-border">{{item}}</td>
+                    <td class="cl-td-border">{{optionValue}}</td>
+                    <td class="cl-td-border"></td>
+                    <td class="cl-td-border"></td>
+                    <td class="cl-td-border"></td>
                   </tr>
+                  
                 </tbody>
               </table>
             </div>
@@ -182,27 +190,36 @@
     data: function() {
       return {
         activeVariant: false,
-        optionValue: [ "viet nam store 1" , "viet nam store 2"],
+        optionValue: "viet nam store 1" ,
         valueVariant: [],
         counter: 0,
-        // activeBr: false;
-        // brItem: ""
-        showCreate: false
+        showCreate: false,
+        listMixVariant: [],
+        options: [],
       }
     },
     computed: {
 
     },
     methods: {
-      keyUpInput() {
-        this.activeVariant = true;
-        const arrparent = this.question;
-        const mangmoi = this.valueVariant;
-        const arrnew = this.question.map(function(e){
-          return e.push(this.valueVariant)
+      // keyUpInput() {
+      //   this.activeVariant = true;
+      // },
+      addVariant() {
+       return this.counter++
+      },
+      onOptionEnter() {
+      this.activeVariant = true;
+      if(this.options.length==1) {
+        this.listMixVariant = this.options[0];
+      } else {
+        this.options.forEach((item, index) => {
+          console.log(`array-${index}`, item)
+          
         })
-        console.log(arrnew)
       }
+      console.log('v-model', this.options);
+    }
     }  
   }
   $(document).ready(function(){
@@ -211,10 +228,6 @@
     });
     //summernot
     $('#summernote').summernote();
-    //button delete
-    $('.cl-border').click(function(){
-      alert('hello')
-    })
   });
 </script>
 <style>
