@@ -87,10 +87,10 @@
         <div class="col-lg-8">
           <div class="cl-col-form-add shadow">
             <h6 class="d-flex font-weight-bold">Product Variants</h6>
-            <div class="row">
-              <div class="col-lg-4">
+           
+              <!-- <div class="col-lg-4">
                 <div class="cl-list-input">
-                  <div class="cl-inp-l" v-for="(n, index) in counter" :key="index" v-if="index <= 2">
+                  <div class="cl-inp-l" v-for="(n, index) in counter" :key="index" >
                     <input class="cl-inp-op-name" type="text">
                   </div>
                 </div>
@@ -102,11 +102,8 @@
               <div class="col-lg-7">
                 <div class="cl-list-input">
                   <div class="cl-inp-r" 
-                    v-for="(n, index) in counter" :key="index" 
-                    v-if="index <= 2"
-                    @keyup.enter="onOptionEnter"
-                    :name="`variant-${index}`">
-                    <input-tag class="cl-inp-op-value" 
+                    v-for="(n, index) in counter" :key="index"  >
+                    <input-tag class="cl-inp-op-value" :before-adding="onAddtag"
                     type="text" placeholder="Add option..."
                     v-model="options[index]"
                     ></input-tag>
@@ -125,8 +122,33 @@
                     </input-tag>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div> -->
+              <template v-for="(item, index) in listinput">
+                <div class="row" :key="`input_index_${index}`">
+                  <div class="col-lg-4">
+                    <div class="cl-list-input">
+                      <div class="cl-inp-l">
+                        <input v-model="item.option_name" class="cl-inp-op-name" type="text">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="cl-list-input">
+                      <div class="cl-inp-r"  >
+                        <input-tag class="cl-inp-op-value" :before-adding="onAddtag"
+                        type="text" placeholder="Add option..."
+                        v-model="item.option_value"
+                        ></input-tag>
+                        <div class="cl-style-delete">
+                          <div class="cl-border">
+                            <button class="cl-icon-delete"></button>
+                          </div>  
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>  
             <button id="addInput" class="cl-add-item-f d-flex" @click="addVariant">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
             <div class="cl-checkbox-f-add d-flex">
@@ -148,7 +170,6 @@
                   </tr>
                 </thead>
                 <tbody>                 
-                
                     <!-- <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
                     <td class="cl-td-border" ><span></span></td> -->
                     <!-- <td class="cl-td-border">{{questions.category}}</td>        
@@ -158,15 +179,15 @@
                     <!-- <ul>
                       <li><td class="cl-td-border"></td></li>
                     </ul> -->
-                    <tr v-for="(item, index) in listMixVariant" :key="index">
+                  <tr>
                     <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border">{{item}}</td>
-                    <td class="cl-td-border">{{optionValue}}</td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
+                    <td class="cl-td-border"></td>
+                    <td class="cl-td-border"></td>
+                    <!-- <td class="cl-td-border"></td> -->
                   </tr>
-                  
                 </tbody>
               </table>
             </div>
@@ -190,12 +211,19 @@
     data: function() {
       return {
         activeVariant: false,
-        optionValue: "viet nam store 1" ,
+        optionValue: [] ,
         valueVariant: [],
         counter: 0,
         showCreate: false,
         listMixVariant: [],
+       // listVariantSize:[],
         options: [],
+        listinput:[
+          {
+            option_name : 'warehouse',
+            option_value: ['viet nam 1' , 'viet nam 2'],
+          }
+        ]
       }
     },
     computed: {
@@ -206,27 +234,33 @@
       //   this.activeVariant = true;
       // },
       addVariant() {
-       return this.counter++
+        if( this.listinput.length < 4){
+          this.listinput.unshift({
+            option_name : '',
+            option_value: [],
+          })
+        }
       },
-      onOptionEnter() {
-      this.activeVariant = true;
-      if(this.options.length==1) {
-        this.listMixVariant = this.options[0];
-      } else {
-        this.options.forEach((item, index) => {
-          console.log(`array-${index}`, item)
-          
-        })
+      onAddtag(tag){
+        this.activeVariant = true;
+        return tag
+      },
+      cartesianProductOf() {
+      return _.reduce(arguments, function(a, b) {
+        return _.flatten(_.map(a, function(x) {
+          return _.map(b, function(y) {
+            return x.concat([y]);
+          });
+        }), true);
+      }, [ [] ]);
       }
-      console.log('v-model', this.options);
-    }
     }  
   }
   $(document).ready(function(){
     $('.cl-img-click').click(function(){
       $('.cl-img-hover').css('display','none')
     });
-    //summernot
+    //summernot 
     $('#summernote').summernote();
   });
 </script>
