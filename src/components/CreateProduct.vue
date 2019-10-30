@@ -86,8 +86,10 @@
       <div class="row cl-row-form">
         <div class="col-lg-8">
           <div class="cl-col-form-add shadow">
-            <h6 class="d-flex font-weight-bold">Product Variants</h6>
-           
+            <div class="cl-title-h6 d-flex">
+              <h6 class=" font-weight-bold">Product Variants</h6>
+              <h6 class="cl-p-title-f-add font-weight-bold" style="padding-left: 87px">Option value</h6>
+            </div>
               <!-- <div class="col-lg-4">
                 <div class="cl-list-input">
                   <div class="cl-inp-l" v-for="(n, index) in counter" :key="index" >
@@ -122,23 +124,51 @@
                     </input-tag>
                   </div>
                 </div>
-              </div> -->
-              <template v-for="(item, index) in listinput">
-                <div class="row" :key="`input_index_${index}`">
+              </div> -->             
+              <template v-for="(item, index) in listinput" >
+                <div class="row" :key="item.id">
                   <div class="col-lg-4">
                     <div class="cl-list-input">
                       <div class="cl-inp-l">
-                        <input v-model="item.option_name" class="cl-inp-op-name" type="text">
+                        <input class="cl-inp-op-name" type="text">
+                      </div>
+                    </div>
+                  </div>
+                   <!-- 
+                    -->
+                  <div class="col-lg-7">
+                    <div class="cl-list-input">
+                      <div class="cl-inp-r" :before-adding="onOptionEnter()">
+                        <input-tag class="cl-inp-op-value"
+                        type="text" placeholder="Add option..."
+                        v-model="options[index]"
+                        ></input-tag>
+                        <div class="cl-style-delete">
+                          <div class="cl-border">
+                            <button class="cl-icon-delete"></button>
+                          </div>  
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+  
+              <template>
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="cl-list-input">
+                      <div class="cl-inp-l">
+                        <input v-model="option_name" class="cl-inp-op-name" type="text">
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-7">
                     <div class="cl-list-input">
-                      <div class="cl-inp-r"  >
-                        <input-tag class="cl-inp-op-value" :before-adding="onAddtag"
+                      <div class="cl-inp-r" >
+                        <input-tag class="cl-inp-op-value"                      
                         type="text" placeholder="Add option..."
-                        v-model="item.option_value"
-                        ></input-tag>
+                        v-model="option_value"></input-tag>
                         <div class="cl-style-delete">
                           <div class="cl-border">
                             <button class="cl-icon-delete"></button>
@@ -179,9 +209,9 @@
                     <!-- <ul>
                       <li><td class="cl-td-border"></td></li>
                     </ul> -->
-                  <tr>
+                  <tr v-for="item in options" :key="item.id">
                     <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border"></td>
+                    <td class="cl-td-border">{{item}}</td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
@@ -215,44 +245,30 @@
         valueVariant: [],
         counter: 0,
         showCreate: false,
+        option_value: ['viet nam 1' , 'viet nam 2'],
+        option_name : 'warehouse',
+        listinput:[],
+        options:[],
         listMixVariant: [],
-       // listVariantSize:[],
-        options: [],
-        listinput:[
-          {
-            option_name : 'warehouse',
-            option_value: ['viet nam 1' , 'viet nam 2'],
-          }
-        ]
       }
     },
     computed: {
-
     },
     methods: {
-      // keyUpInput() {
-      //   this.activeVariant = true;
-      // },
       addVariant() {
-        if( this.listinput.length < 4){
-          this.listinput.unshift({
-            option_name : '',
-            option_value: [],
-          })
+        if( this.listinput.length < 3){
+          this.listinput.unshift({})
         }
       },
-      onAddtag(tag){
+       onOptionEnter() {
         this.activeVariant = true;
-        return tag
-      },
-      cartesianProductOf() {
-      return _.reduce(arguments, function(a, b) {
-        return _.flatten(_.map(a, function(x) {
-          return _.map(b, function(y) {
-            return x.concat([y]);
-          });
-        }), true);
-      }, [ [] ]);
+        if(this.options.length == 1) {
+          this.options[0]
+          console.log(this.options[0])
+        } else if (this.options.length > 1){
+          this.options[1]
+          console.log(this.options[1])
+        }
       }
     }  
   }

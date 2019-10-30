@@ -10,7 +10,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import InputTag from 'vue-input-tag'
 import Paginate from 'vuejs-paginate'
+import 'underscore'
 import 'underscore/underscore.js'
+import 'underscore/underscore-min.js'
 Vue.component('paginate', Paginate)
 Vue.component('input-tag', InputTag)
 Vue.use(VueAxios, axios)
