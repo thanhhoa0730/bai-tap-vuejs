@@ -125,21 +125,19 @@
                   </div>
                 </div>
               </div> -->             
-              <template v-for="(item, index) in listinput" >
-                <div class="row" :key="item.id">
+              <template v-for="(item, index) in listinput">
+                <div class="row" :key="`input_index_${index}`">
                   <div class="col-lg-4">
                     <div class="cl-list-input">
                       <div class="cl-inp-l">
-                        <input class="cl-inp-op-name" type="text">
+                        <input v-model="item.option_name" class="cl-inp-op-name" type="text">
                       </div>
                     </div>
                   </div>
-                   <!-- 
-                    -->
                   <div class="col-lg-7">
                     <div class="cl-list-input">
-                      <div class="cl-inp-r" :before-adding="onOptionEnter()">
-                        <input-tag class="cl-inp-op-value"
+                      <div class="cl-inp-r"  @keyup.enter="onOptionEnter">
+                        <input-tag class="cl-inp-op-value" 
                         type="text" placeholder="Add option..."
                         v-model="options[index]"
                         ></input-tag>
@@ -152,9 +150,9 @@
                     </div>
                   </div>
                 </div>
-              </template>
-  
-              <template>
+              </template>    
+
+               <template>
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="cl-list-input">
@@ -179,6 +177,7 @@
                   </div>
                 </div>
               </template>  
+
             <button id="addInput" class="cl-add-item-f d-flex" @click="addVariant">+ Add variant option</button>
             <h6 class="cl-h6-f-add font-weight-bold d-flex">Modify The Variants To Be Created:</h6>
             <div class="cl-checkbox-f-add d-flex">
@@ -200,23 +199,13 @@
                   </tr>
                 </thead>
                 <tbody>                 
-                    <!-- <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border" ><span></span></td> -->
-                    <!-- <td class="cl-td-border">{{questions.category}}</td>        
-                    <td class="cl-td-border">{{questions.type}}</td>
-                    <td class="cl-td-border">{{questions.difficulty}}</td>
-                    <td class="cl-td-border">{{questions.correct_answer}}</td> -->
-                    <!-- <ul>
-                      <li><td class="cl-td-border"></td></li>
-                    </ul> -->
-                  <tr v-for="item in options" :key="item.id">
+                  <tr v-for="option in options" :key="option.id">
                     <th scope="row"><input class="text" id="check_box" type="checkbox"></th>
-                    <td class="cl-td-border">{{item}}</td>
+                    <td class="cl-td-border" v-show="activeVariant">{{option}}</td>
+                    <td class="cl-td-border">{{option_value}}</td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
                     <td class="cl-td-border"></td>
-                    <td class="cl-td-border"></td>
-                    <!-- <td class="cl-td-border"></td> -->
                   </tr>
                 </tbody>
               </table>
@@ -247,9 +236,8 @@
         showCreate: false,
         option_value: ['viet nam 1' , 'viet nam 2'],
         option_name : 'warehouse',
-        listinput:[],
         options:[],
-        listMixVariant: [],
+        listinput:[]
       }
     },
     computed: {
@@ -257,19 +245,22 @@
     methods: {
       addVariant() {
         if( this.listinput.length < 3){
-          this.listinput.unshift({})
+          this.listinput.unshift({
+          })
         }
       },
-       onOptionEnter() {
+      onOptionEnter() {
         this.activeVariant = true;
-        if(this.options.length == 1) {
-          this.options[0]
-          console.log(this.options[0])
-        } else if (this.options.length > 1){
-          this.options[1]
-          console.log(this.options[1])
-        }
-      }
+        if(this.listinput.option_value==1)
+        {
+          this.options = this.listinput;
+        }        
+        return arr.reduce((a, b) =>
+          a.map(x => b.map(y => x.concat(y)))
+          .reduce((a, b) => a.concat(b), []), [[]]);        
+        var arr = this.options;
+        console.log('onOptionEnter(arr)'+ ' ' +onOptionEnter(arr))
+      },
     }  
   }
   $(document).ready(function(){
