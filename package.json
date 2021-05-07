@@ -21,7 +21,7 @@
     "popper.js": "^1.15.0",
     "summernote": "^0.8.12",
     "tagit": "^1.1.2",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.5",
     "vue-input-tag": "^2.0.6",
